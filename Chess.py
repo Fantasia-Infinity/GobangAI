@@ -30,7 +30,7 @@ class Chessboard:
                         for d in a:
                             if not (s==0 and d==0):
                                 if self.inrange(i+s,j+d):
-                                    if board[i+s][j+d]!=0:
+                                    if board[i+s][j+d]!=0:#待进一步剪枝...
                                         newboard=cp.deepcopy(board)
                                         newboard[i][j]=color
                                         l.append(newboard)
