@@ -5,29 +5,32 @@
 #include<time.h>
 #include<vector>
 #include<algorithm>
-#include <graphics.h>      // ÒıÓÃÍ¼ĞÎ¿âÍ·ÎÄ¼ş
+#include <graphics.h>      // å¼•ç”¨å›¾å½¢åº“å¤´æ–‡ä»¶
 #include <conio.h>
-#define GRID_NUM    15 //Ã¿Ò»ĞĞ(ÁĞ)µÄÆåÅÌ½»µãÊı
-#define GRID_COUNT  225*4//ÆåÅÌÄÚ´æ´óĞ¡
-#define MYBLACK        0 //ºÚÆåÓÃ0±íÊ¾
-#define MYWHITE        1 //°×ÆåÓÃ1±íÊ¾
-#define NOSTONE     9  //Ã»ÓĞÆå×Ó
-//Õâ×éºê¶¨ÒåÁËÓÃÒÔ´ú±í¼¸ÖÖÆåĞÍµÄÊı×Ö
-#define STWO        1  //Ãß¶ş
-#define STHREE        2  //ÃßÈı
-#define SFOUR        3  //³åËÄ
-#define TWO        4  //»î¶ş
-#define THREE        5  //»îÈı
-#define FOUR        6  //»îËÄ
-#define FIVE        7  //ÎåÁ¬
-#define NOTYPE        11 //Î´¶¨Òå
-#define ANALSISED   255//ÒÑ·ÖÎö¹ıµÄ
-#define TOBEANALSIS 0  //ÒÑ·ÖÎö¹ıµÄ
-//Õâ¸öºêÓÃÒÔ¼ì²éÄ³Ò»×ø±êÊÇ·ñÊÇÆåÅÌÉÏµÄÓĞĞ§Âä×Óµã
+#define GRID_NUM    15 //æ¯ä¸€è¡Œ(åˆ—)çš„æ£‹ç›˜äº¤ç‚¹æ•°
+#define GRID_COUNT  225*4//æ£‹ç›˜å†…å­˜å¤§å°
+#define MYBLACK        0 //é»‘æ£‹ç”¨0è¡¨ç¤º
+#define MYWHITE        1 //ç™½æ£‹ç”¨1è¡¨ç¤º
+#define NOSTONE     9  //æ²¡æœ‰æ£‹å­
+//è¿™ç»„å®å®šä¹‰äº†ç”¨ä»¥ä»£è¡¨å‡ ç§æ£‹å‹çš„æ•°å­—
+#define STWO        1  //çœ äºŒ
+#define STHREE        2  //çœ ä¸‰
+#define SFOUR        3  //å†²å››
+#define TWO        4  //æ´»äºŒ
+#define THREE        5  //æ´»ä¸‰
+#define FOUR        6  //æ´»å››
+#define FIVE        7  //äº”è¿
+#define NOTYPE        11 //æœªå®šä¹‰
+#define ANALSISED   255//å·²åˆ†æè¿‡çš„
+#define TOBEANALSIS 0  //å·²åˆ†æè¿‡çš„
+//è¿™ä¸ªå®ç”¨ä»¥æ£€æŸ¥æŸä¸€åæ ‡æ˜¯å¦æ˜¯æ£‹ç›˜ä¸Šçš„æœ‰æ•ˆè½å­ç‚¹
 #define IsValidPos(x,y) ((x>=0 && x<GRID_NUM) && (y>=0 && y<GRID_NUM)
-//¶¨ÒåÁËÃ¶¾ÙĞÍµÄÊı¾İÀàĞÍ£¬¾«È·£¬ÏÂ±ß½ç£¬ÉÏ±ß½ç
+//å®šä¹‰äº†æšä¸¾å‹çš„æ•°æ®ç±»å‹ï¼Œç²¾ç¡®ï¼Œä¸‹è¾¹ç•Œï¼Œä¸Šè¾¹ç•Œ
 using namespace std;
-//È«¾Ö±äÁ¿,ÓÃÒÔÍ³¼Æ¹ÀÖµº¯ÊıµÄÖ´ĞĞ±éÊı
+//å…¨å±€å˜é‡,ç”¨ä»¥ç»Ÿè®¡ä¼°å€¼å‡½æ•°çš„æ‰§è¡Œéæ•°
+
+//åœ¨æœç´¢å±‚æ•°ä¸º3çš„æ—¶å€™æœ‰debugç‰ˆå’Œreleaseç‰ˆè¡Œä¸ºä¸ä¸€æ ·ï¼ˆä¸€ä¸ªä¼šå˜æˆæ™ºéšœï¼‰çš„ç„å­¦é—®é¢˜....æš‚æ—¶ä¸çŸ¥é“ä¸ºä»€ä¹ˆ
+
 int ccount = 0;
 typedef struct Node
 {
@@ -35,7 +38,7 @@ typedef struct Node
 	int y;
 }MYPOINT;
 
-//ÓÃÒÔ±íÊ¾Æå×ÓÎ»ÖÃµÄ½á¹¹
+//ç”¨ä»¥è¡¨ç¤ºæ£‹å­ä½ç½®çš„ç»“æ„
 
 class MOVESTONE
 {
@@ -54,7 +57,7 @@ public:
 		this->ptMovePoint.y = m2.ptMovePoint.y;
 	}
 };
-//Õâ¸ö½á¹¹ÓÃÒÔ±íÊ¾×ß·¨
+//è¿™ä¸ªç»“æ„ç”¨ä»¥è¡¨ç¤ºèµ°æ³•
 class State {
 public:
 	int grid[GRID_NUM][GRID_NUM];
@@ -69,8 +72,8 @@ public:
 class AFTERMOVE
 {
 public:
-	State state;//ÕâÒ»²½Ö®ºóµÄ×´Ì¬
-	int score;        //×ß·¨µÄ·ÖÊı
+	State state;//è¿™ä¸€æ­¥ä¹‹åçš„çŠ¶æ€
+	int score;        //èµ°æ³•çš„åˆ†æ•°
 	AFTERMOVE() {};
 	AFTERMOVE(State &s,int score) {
 		this->state = s;
@@ -85,7 +88,7 @@ public:
 
 
 typedef vector<MOVESTONE> movelists;
-//=================================================================//
+
 int AnalysisLine(int* position, int GridNum, int StonePos);
 int AnalysisRight(int position[GRID_NUM][GRID_NUM], int i, int j);
 int AnalysisLeft(int position[GRID_NUM][GRID_NUM], int i, int j);
@@ -96,15 +99,15 @@ int CreatePossibleMove(int position[GRID_NUM][GRID_NUM], int nPly, int nSide);
 void display(int position[GRID_NUM][GRID_NUM]);
 
 
-//=================================================================//
-int m_LineRecord[30];          //´æ·ÅAnalysisLine·ÖÎö½á¹ûµÄÊı×é
-int TypeRecord[GRID_NUM][GRID_NUM][4];//´æ·ÅÈ«²¿·ÖÎö½á¹ûµÄÊı×é,ÓĞÈı¸öÎ¬¶È,ÓÃÓÚ´æ·ÅË®Æ½¡¢´¹Ö±¡¢×óĞ±¡¢ÓÒĞ± 4 ¸ö·½ÏòÉÏËùÓĞÆåĞÍ·ÖÎö½á¹û
-int TypeCount[2][20];          //´æ·ÅÍ³¼Ç¹ıµÄ·ÖÎö½á¹ûµÄÊı×é
-int m_nMoveCount;//´Ë±äÁ¿ÓÃÒÔ¼ÇÂ¼×ß·¨µÄ×ÜÊı  
-int m_nSearchDepth;        //×î´óËÑË÷Éî¶È
-int MaxDepth=2;        //µ±Ç°ËÑË÷µÄ×î´óËÑË÷Éî¶È
-							   //CSearchEngine* m_pSE;         //ËÑË÷ÒıÇæÖ¸Õë 
-										 //Î»ÖÃÖØÒªĞÔ¼ÛÖµ±í,´Ë±í´ÓÖĞ¼äÏòÍâ,Ô½ÍùÍâ¼ÛÖµÔ½µÍ
+
+int m_LineRecord[30];          //å­˜æ”¾AnalysisLineåˆ†æç»“æœçš„æ•°ç»„
+int TypeRecord[GRID_NUM][GRID_NUM][4];//å­˜æ”¾å…¨éƒ¨åˆ†æç»“æœçš„æ•°ç»„,æœ‰ä¸‰ä¸ªç»´åº¦,ç”¨äºå­˜æ”¾æ°´å¹³ã€å‚ç›´ã€å·¦æ–œã€å³æ–œ 4 ä¸ªæ–¹å‘ä¸Šæ‰€æœ‰æ£‹å‹åˆ†æç»“æœ
+int TypeCount[2][20];          //å­˜æ”¾ç»Ÿè®°è¿‡çš„åˆ†æç»“æœçš„æ•°ç»„
+int m_nMoveCount;//æ­¤å˜é‡ç”¨ä»¥è®°å½•èµ°æ³•çš„æ€»æ•°  
+int m_nSearchDepth;        //æœ€å¤§æœç´¢æ·±åº¦
+int MaxDepth=2;        //å½“å‰æœç´¢çš„æœ€å¤§æœç´¢æ·±åº¦
+							   //CSearchEngine* m_pSE;         //æœç´¢å¼•æ“æŒ‡é’ˆ 
+										 //ä½ç½®é‡è¦æ€§ä»·å€¼è¡¨,æ­¤è¡¨ä»ä¸­é—´å‘å¤–,è¶Šå¾€å¤–ä»·å€¼è¶Šä½
 int PosValue[GRID_NUM][GRID_NUM] =
 {
 	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
@@ -129,8 +132,8 @@ int Evaluate(int position[GRID_NUM][GRID_NUM], int color)
 {
 	int i, j, k;
 	int nStoneType;
-	ccount++;//¼ÆÊıÆ÷ÀÛ¼Ó
-			  //Çå¿ÕÆåĞÍ·ÖÎö½á¹û
+	ccount++;//è®¡æ•°å™¨ç´¯åŠ 
+			  //æ¸…ç©ºæ£‹å‹åˆ†æç»“æœ
 	memset(TypeRecord, TOBEANALSIS, GRID_NUM*GRID_NUM * 4*4);
 	memset(TypeCount, 0, 40 * 4);
 
@@ -139,24 +142,24 @@ int Evaluate(int position[GRID_NUM][GRID_NUM], int color)
 		{
 			if (position[i][j] != NOSTONE)
 			{
-				//Èç¹ûË®Æ½·½ÏòÉÏÃ»ÓĞ·ÖÎö¹ı
+				//å¦‚æœæ°´å¹³æ–¹å‘ä¸Šæ²¡æœ‰åˆ†æè¿‡
 				if (TypeRecord[i][j][0] == TOBEANALSIS)
 					AnalysisHorizon(position, i, j);
 
-				//Èç¹û´¹Ö±·½ÏòÉÏÃ»ÓĞ·ÖÎö¹ı
+				//å¦‚æœå‚ç›´æ–¹å‘ä¸Šæ²¡æœ‰åˆ†æè¿‡
 				if (TypeRecord[i][j][1] == TOBEANALSIS)
 					AnalysisVertical(position, i, j);
 
-				//Èç¹û×óĞ±·½ÏòÉÏÃ»ÓĞ·ÖÎö¹ı
+				//å¦‚æœå·¦æ–œæ–¹å‘ä¸Šæ²¡æœ‰åˆ†æè¿‡
 				if (TypeRecord[i][j][2] == TOBEANALSIS)
 					AnalysisLeft(position, i, j);
 
-				//Èç¹ûÓÒĞ±·½ÏòÉÏÃ»ÓĞ·ÖÎö¹ı
+				//å¦‚æœå³æ–œæ–¹å‘ä¸Šæ²¡æœ‰åˆ†æè¿‡
 				if (TypeRecord[i][j][3] == TOBEANALSIS)
 					AnalysisRight(position, i, j);
 			}
 		}
-	//¶Ô·ÖÎö½á¹û½øĞĞÍ³¼Æ,µÃµ½Ã¿ÖÖÆåĞÍµÄÊıÁ¿
+	//å¯¹åˆ†æç»“æœè¿›è¡Œç»Ÿè®¡,å¾—åˆ°æ¯ç§æ£‹å‹çš„æ•°é‡
 	for (i = 0; i<GRID_NUM; i++)
 		for (j = 0; j<GRID_NUM; j++)
 			for (k = 0; k<4; k++){
@@ -164,25 +167,25 @@ int Evaluate(int position[GRID_NUM][GRID_NUM], int color)
 				if (nStoneType != NOSTONE){
 					switch (TypeRecord[i][j][k])
 					{
-					case FIVE://ÎåÁ¬
+					case FIVE://äº”è¿
 						TypeCount[nStoneType][FIVE]++;
 						break;
-					case FOUR://»îËÄ
+					case FOUR://æ´»å››
 						TypeCount[nStoneType][FOUR]++;
 						break;
-					case SFOUR://³åËÄ
+					case SFOUR://å†²å››
 						TypeCount[nStoneType][SFOUR]++;
 						break;
-					case THREE://»îÈı
+					case THREE://æ´»ä¸‰
 						TypeCount[nStoneType][THREE]++;
 						break;
-					case STHREE://ÃßÈı
+					case STHREE://çœ ä¸‰
 						TypeCount[nStoneType][STHREE]++;
 						break;
-					case TWO://»î¶ş
+					case TWO://æ´»äºŒ
 						TypeCount[nStoneType][TWO]++;
 						break;
-					case STWO://Ãß¶ş
+					case STWO://çœ äºŒ
 						TypeCount[nStoneType][STWO]++;
 						break;
 					default:
@@ -190,7 +193,7 @@ int Evaluate(int position[GRID_NUM][GRID_NUM], int color)
 					}
 				}
 			}
-	//Èç¹ûÒÑÎåÁ¬,·µ»Ø¼«Öµ
+	//å¦‚æœå·²äº”è¿,è¿”å›æå€¼
 
 	if (TypeCount[MYBLACK][FIVE])
 	{
@@ -201,129 +204,129 @@ int Evaluate(int position[GRID_NUM][GRID_NUM], int color)
 		return 9999;
 	}
 
-	//Á½¸ö³åËÄµÈÓÚÒ»¸ö»îËÄ
+	//ä¸¤ä¸ªå†²å››ç­‰äºä¸€ä¸ªæ´»å››
 	if (TypeCount[MYWHITE][SFOUR]>1)
 		TypeCount[MYWHITE][FOUR]++;
 	if (TypeCount[MYBLACK][SFOUR]>1)
 		TypeCount[MYBLACK][FOUR]++;
 	int WValue = 0, BValue = 0;
 
-	if (color== MYWHITE)//ÂÖµ½°×Æå×ß
+	if (color== MYWHITE)//è½®åˆ°ç™½æ£‹èµ°
 	{
 		if (TypeCount[MYWHITE][FOUR])
 		{
-			return 9990;//»îËÄ,°×Ê¤·µ»Ø¼«Öµ
+			return 9990;//æ´»å››,ç™½èƒœè¿”å›æå€¼
 		}
 		if (TypeCount[MYWHITE][SFOUR])
 		{
-			return 9980;//³åËÄ,°×Ê¤·µ»Ø¼«Öµ
+			return 9980;//å†²å››,ç™½èƒœè¿”å›æå€¼
 		}
 		if (TypeCount[MYBLACK][FOUR])
 		{
-			return -9970;//°×ÎŞ³åËÄ»îËÄ,¶øºÚÓĞ»îËÄ,ºÚÊ¤·µ»Ø¼«Öµ
+			return -9970;//ç™½æ— å†²å››æ´»å››,è€Œé»‘æœ‰æ´»å››,é»‘èƒœè¿”å›æå€¼
 		}
 		if (TypeCount[MYBLACK][SFOUR] && TypeCount[MYBLACK][THREE])
 		{
-			return -9960;//¶øºÚÓĞ³åËÄºÍ»îÈı,ºÚÊ¤·µ»Ø¼«Öµ
+			return -9960;//è€Œé»‘æœ‰å†²å››å’Œæ´»ä¸‰,é»‘èƒœè¿”å›æå€¼
 		}
 		if (TypeCount[MYWHITE][THREE] && TypeCount[MYBLACK][SFOUR] == 0)
 		{
-			return 9950;//°×ÓĞ»îÈı¶øºÚÃ»ÓĞËÄ,°×Ê¤·µ»Ø¼«Öµ
+			return 9950;//ç™½æœ‰æ´»ä¸‰è€Œé»‘æ²¡æœ‰å››,ç™½èƒœè¿”å›æå€¼
 		}
 		if (TypeCount[MYBLACK][THREE]>1 && TypeCount[MYWHITE][SFOUR] == 0 && TypeCount[MYWHITE][THREE] == 0 && TypeCount[MYWHITE][STHREE] == 0)
 		{
-			return -9940;//ºÚµÄ»îÈı¶àÓÚÒ»¸ö,¶ø°×ÎŞËÄºÍÈı,ºÚÊ¤·µ»Ø¼«Öµ
+			return -9940;//é»‘çš„æ´»ä¸‰å¤šäºä¸€ä¸ª,è€Œç™½æ— å››å’Œä¸‰,é»‘èƒœè¿”å›æå€¼
 		}
 		if (TypeCount[MYWHITE][THREE]>1)
-			WValue += 2000;//°×»îÈı¶àÓÚÒ»¸ö,°×Æå¼ÛÖµ¼Ó2000
+			WValue += 2000;//ç™½æ´»ä¸‰å¤šäºä¸€ä¸ª,ç™½æ£‹ä»·å€¼åŠ 2000
 		else
-			//·ñÔò°×Æå¼ÛÖµ¼Ó200
+			//å¦åˆ™ç™½æ£‹ä»·å€¼åŠ 200
 			if (TypeCount[MYWHITE][THREE])
 				WValue += 200;
 		if (TypeCount[MYBLACK][THREE]>1)
-			BValue += 500;//ºÚµÄ»îÈı¶àÓÚÒ»¸ö,ºÚÆå¼ÛÖµ¼Ó500
+			BValue += 500;//é»‘çš„æ´»ä¸‰å¤šäºä¸€ä¸ª,é»‘æ£‹ä»·å€¼åŠ 500
 		else
-			//·ñÔòºÚÆå¼ÛÖµ¼Ó100
+			//å¦åˆ™é»‘æ£‹ä»·å€¼åŠ 100
 			if (TypeCount[MYBLACK][THREE])
 				BValue += 100;
-		//Ã¿¸öÃßÈı¼Ó10
+		//æ¯ä¸ªçœ ä¸‰åŠ 10
 		if (TypeCount[MYWHITE][STHREE])
 			WValue += TypeCount[MYWHITE][STHREE] * 10;
-		//Ã¿¸öÃßÈı¼Ó10
+		//æ¯ä¸ªçœ ä¸‰åŠ 10
 		if (TypeCount[MYBLACK][STHREE])
 			BValue += TypeCount[MYBLACK][STHREE] * 10;
-		//Ã¿¸ö»î¶ş¼Ó4
+		//æ¯ä¸ªæ´»äºŒåŠ 4
 		if (TypeCount[MYWHITE][TWO])
 			WValue += TypeCount[MYWHITE][TWO] * 4;
-		//Ã¿¸ö»î¶ş¼Ó4
+		//æ¯ä¸ªæ´»äºŒåŠ 4
 		if (TypeCount[MYBLACK][STWO])
 			BValue += TypeCount[MYBLACK][TWO] * 4;
-		//Ã¿¸öÃß¶ş¼Ó1
+		//æ¯ä¸ªçœ äºŒåŠ 1
 		if (TypeCount[MYWHITE][STWO])
 			WValue += TypeCount[MYWHITE][STWO];
-		//Ã¿¸öÃß¶ş¼Ó1
+		//æ¯ä¸ªçœ äºŒåŠ 1
 		if (TypeCount[MYBLACK][STWO])
 			BValue += TypeCount[MYBLACK][STWO];
 	}
-	else//ÂÖµ½ºÚÆå×ß
+	else//è½®åˆ°é»‘æ£‹èµ°
 	{
 		if (TypeCount[MYBLACK][FOUR])
 		{
-			return -9990;//»îËÄ,ºÚÊ¤·µ»Ø¼«Öµ
+			return -9990;//æ´»å››,é»‘èƒœè¿”å›æå€¼
 		}
 		if (TypeCount[MYBLACK][SFOUR])
 		{
-			return -9980;//³åËÄ,ºÚÊ¤·µ»Ø¼«Öµ
+			return -9980;//å†²å››,é»‘èƒœè¿”å›æå€¼
 		}
 		if (TypeCount[MYWHITE][FOUR])
-			return 9970;//»îËÄ,°×Ê¤·µ»Ø¼«Öµ
+			return 9970;//æ´»å››,ç™½èƒœè¿”å›æå€¼
 
 		if (TypeCount[MYWHITE][SFOUR] && TypeCount[MYWHITE][THREE])
-			return 9960;//³åËÄ²¢»îÈı,°×Ê¤·µ»Ø¼«Öµ
+			return 9960;//å†²å››å¹¶æ´»ä¸‰,ç™½èƒœè¿”å›æå€¼
 
 		if (TypeCount[MYBLACK][THREE] && TypeCount[MYWHITE][SFOUR] == 0)
-			return -9950;//ºÚ»îÈı,°×ÎŞËÄ¡£ºÚÊ¤·µ»Ø¼«Öµ
+			return -9950;//é»‘æ´»ä¸‰,ç™½æ— å››ã€‚é»‘èƒœè¿”å›æå€¼
 
 		if (TypeCount[MYWHITE][THREE]>1 && TypeCount[MYBLACK][SFOUR] == 0 && TypeCount[MYBLACK][THREE] == 0 && TypeCount[MYBLACK][STHREE] == 0)
-			return 9940;//°×µÄ»îÈı¶àÓÚÒ»¸ö,¶øºÚÎŞËÄºÍÈı,°×Ê¤·µ»Ø¼«Öµ
+			return 9940;//ç™½çš„æ´»ä¸‰å¤šäºä¸€ä¸ª,è€Œé»‘æ— å››å’Œä¸‰,ç™½èƒœè¿”å›æå€¼
 
-						 //ºÚµÄ»îÈı¶àÓÚÒ»¸ö,ºÚÆå¼ÛÖµ¼Ó2000
+						 //é»‘çš„æ´»ä¸‰å¤šäºä¸€ä¸ª,é»‘æ£‹ä»·å€¼åŠ 2000
 		if (TypeCount[MYBLACK][THREE]>1)
 			BValue += 2000;
 		else
-			//·ñÔòºÚÆå¼ÛÖµ¼Ó200
+			//å¦åˆ™é»‘æ£‹ä»·å€¼åŠ 200
 			if (TypeCount[MYBLACK][THREE])
 				BValue += 200;
 
-		//°×µÄ»îÈı¶àÓÚÒ»¸ö,°×Æå¼ÛÖµ¼Ó 500
+		//ç™½çš„æ´»ä¸‰å¤šäºä¸€ä¸ª,ç™½æ£‹ä»·å€¼åŠ  500
 		if (TypeCount[MYWHITE][THREE]>1)
 			WValue += 500;
 		else
-			//·ñÔò°×Æå¼ÛÖµ¼Ó100
+			//å¦åˆ™ç™½æ£‹ä»·å€¼åŠ 100
 			if (TypeCount[MYWHITE][THREE])
 				WValue += 100;
 
-		//Ã¿¸öÃßÈı¼Ó10
+		//æ¯ä¸ªçœ ä¸‰åŠ 10
 		if (TypeCount[MYWHITE][STHREE])
 			WValue += TypeCount[MYWHITE][STHREE] * 10;
-		//Ã¿¸öÃßÈı¼Ó10
+		//æ¯ä¸ªçœ ä¸‰åŠ 10
 		if (TypeCount[MYBLACK][STHREE])
 			BValue += TypeCount[MYBLACK][STHREE] * 10;
-		//Ã¿¸ö»î¶ş¼Ó4
+		//æ¯ä¸ªæ´»äºŒåŠ 4
 		if (TypeCount[MYWHITE][TWO])
 			WValue += TypeCount[MYWHITE][TWO] * 4;
-		//Ã¿¸ö»î¶ş¼Ó4
+		//æ¯ä¸ªæ´»äºŒåŠ 4
 		if (TypeCount[MYBLACK][STWO])
 			BValue += TypeCount[MYBLACK][TWO] * 4;
-		//Ã¿¸öÃß¶ş¼Ó1
+		//æ¯ä¸ªçœ äºŒåŠ 1
 		if (TypeCount[MYWHITE][STWO])
 			WValue += TypeCount[MYWHITE][STWO];
-		//Ã¿¸öÃß¶ş¼Ó1
+		//æ¯ä¸ªçœ äºŒåŠ 1
 		if (TypeCount[MYBLACK][STWO])
 			BValue += TypeCount[MYBLACK][STWO];
 	}
 
-	//¼ÓÉÏËùÓĞÆå×ÓµÄÎ»ÖÃ¼ÛÖµ
+	//åŠ ä¸Šæ‰€æœ‰æ£‹å­çš„ä½ç½®ä»·å€¼
 	for (i = 0; i<GRID_NUM; i++)
 		for (j = 0; j<GRID_NUM; j++){
 			nStoneType = position[i][j];
@@ -333,32 +336,32 @@ int Evaluate(int position[GRID_NUM][GRID_NUM], int color)
 				else
 					WValue += PosValue[i][j];
 		}
-	//·µ»Ø¹ÀÖµ
+	//è¿”å›ä¼°å€¼
 		return WValue - BValue;
 }
 
-//·ÖÎöÆåÅÌÉÏÄ³µãÔÚË®Æ½·½ÏòÉÏµÄÆåĞÍ
+//åˆ†ææ£‹ç›˜ä¸ŠæŸç‚¹åœ¨æ°´å¹³æ–¹å‘ä¸Šçš„æ£‹å‹
 int AnalysisHorizon(int position[GRID_NUM][GRID_NUM], int i, int j)
 {
-	//µ÷ÓÃÖ±Ïß·ÖÎöº¯Êı·ÖÎö
+	//è°ƒç”¨ç›´çº¿åˆ†æå‡½æ•°åˆ†æ
 	AnalysisLine(position[i], 15, j);
-	//Ê°È¡·ÖÎö½á¹û
+	//æ‹¾å–åˆ†æç»“æœ
 	for (int s = 0; s<15; s++)
 		if (m_LineRecord[s] != TOBEANALSIS)
 			TypeRecord[i][s][0] = m_LineRecord[s];
 	return TypeRecord[i][j][0];
 }
 
-//·ÖÎöÆåÅÌÉÏÄ³µãÔÚ´¹Ö±·½ÏòÉÏµÄÆåĞÍ
+//åˆ†ææ£‹ç›˜ä¸ŠæŸç‚¹åœ¨å‚ç›´æ–¹å‘ä¸Šçš„æ£‹å‹
 int AnalysisVertical(int position[GRID_NUM][GRID_NUM], int i, int j)
 {
 	int tempArray[GRID_NUM];
-	//½«´¹Ö±·½ÏòÉÏµÄÆå×Ó×ªÈëÒ»Î¬Êı×é
+	//å°†å‚ç›´æ–¹å‘ä¸Šçš„æ£‹å­è½¬å…¥ä¸€ç»´æ•°ç»„
 	for (int k = 0; k<GRID_NUM; k++)
 		tempArray[k] = position[k][j];
-	//µ÷ÓÃÖ±Ïß·ÖÎöº¯Êı·ÖÎö
+	//è°ƒç”¨ç›´çº¿åˆ†æå‡½æ•°åˆ†æ
 	AnalysisLine (tempArray, GRID_NUM, i);
-	//Ê°È¡·ÖÎö½á¹û
+	//æ‹¾å–åˆ†æç»“æœ
 	for (int s = 0; s<GRID_NUM; s++)
 		if (m_LineRecord[s] != TOBEANALSIS)
 			TypeRecord[s][j][1] = m_LineRecord[s];
@@ -366,7 +369,7 @@ int AnalysisVertical(int position[GRID_NUM][GRID_NUM], int i, int j)
 	return TypeRecord[i][j][1];
 }
 
-//·ÖÎöÆåÅÌÉÏÄ³µãÔÚ×óĞ±·½ÏòÉÏµÄÆåĞÍ
+//åˆ†ææ£‹ç›˜ä¸ŠæŸç‚¹åœ¨å·¦æ–œæ–¹å‘ä¸Šçš„æ£‹å‹
 int AnalysisLeft(int position[GRID_NUM][GRID_NUM], int i, int j)
 {
 	int tempArray[GRID_NUM];
@@ -382,23 +385,23 @@ int AnalysisLeft(int position[GRID_NUM][GRID_NUM], int i, int j)
 		x = 0;
 		y = i - j;
 	}
-	//½«Ğ±·½ÏòÉÏµÄÆå×Ó×ªÈëÒ»Î¬Êı×é
+	//å°†æ–œæ–¹å‘ä¸Šçš„æ£‹å­è½¬å…¥ä¸€ç»´æ•°ç»„
 	for (k = 0; k<GRID_NUM; k++)
 	{
 		if (x + k>14 || y + k>14)
 			break;
 		tempArray[k] = position[y + k][x + k];
 	}
-	//µ÷ÓÃÖ±Ïß·ÖÎöº¯Êı·ÖÎö
+	//è°ƒç”¨ç›´çº¿åˆ†æå‡½æ•°åˆ†æ
 	AnalysisLine(tempArray, k, j - x);
-	//Ê°È¡·ÖÎö½á¹û
+	//æ‹¾å–åˆ†æç»“æœ
 	for (int s = 0; s<k; s++)
 		if (m_LineRecord[s] != TOBEANALSIS)
 			TypeRecord[y + s][x + s][2] = m_LineRecord[s];
 	return TypeRecord[i][j][2];
 }
 
-//·ÖÎöÆåÅÌÉÏÄ³µãÔÚÓÒĞ±·½ÏòÉÏµÄÆåĞÍ
+//åˆ†ææ£‹ç›˜ä¸ŠæŸç‚¹åœ¨å³æ–œæ–¹å‘ä¸Šçš„æ£‹å‹
 int AnalysisRight(int position[][GRID_NUM], int i, int j)
 {
 	int tempArray[GRID_NUM];
@@ -416,16 +419,16 @@ int AnalysisRight(int position[][GRID_NUM], int i, int j)
 		y = i + j;
 		realnum = j;
 	}
-	//½«Ğ±·½ÏòÉÏµÄÆå×Ó×ªÈëÒ»Î¬Êı×é
+	//å°†æ–œæ–¹å‘ä¸Šçš„æ£‹å­è½¬å…¥ä¸€ç»´æ•°ç»„
 	for (k = 0; k<GRID_NUM; k++)
 	{
 		if (x + k>14 || y - k<0)
 			break;
 		tempArray[k] = position[y - k][x + k];
 	}
-	//µ÷ÓÃÖ±Ïß·ÖÎöº¯Êı·ÖÎö
+	//è°ƒç”¨ç›´çº¿åˆ†æå‡½æ•°åˆ†æ
 	AnalysisLine(tempArray, k, j - x);
-	//Ê°È¡·ÖÎö½á¹û
+	//æ‹¾å–åˆ†æç»“æœ
 	for (int s = 0; s<k; s++)
 		if (m_LineRecord[s] != TOBEANALSIS)
 			TypeRecord[y - s][x + s][3] = m_LineRecord[s];
@@ -443,20 +446,20 @@ int AnalysisLine(int* position, int GridNum, int StonePos)
 
 	if (GridNum<5)
 	{
-		//Êı×é³¤¶ÈĞ¡ÓÚ5Ã»ÓĞÒâÒå
+		//æ•°ç»„é•¿åº¦å°äº5æ²¡æœ‰æ„ä¹‰
 		memset(m_LineRecord, ANALSISED, GridNum*4);
 		return 0;
 	}
 	nAnalyPos = StonePos;
 	memset(m_LineRecord, TOBEANALSIS, 30*4);
 	memset(AnalyLine, 0x0F, 30*4);
-	//½«´«ÈëÊı×é×°ÈëAnalyLine;
+	//å°†ä¼ å…¥æ•°ç»„è£…å…¥AnalyLine;
 	memcpy(&AnalyLine, position, GridNum*4);
 	GridNum--;
 	StoneType = AnalyLine[nAnalyPos];
 	LeftEdge = nAnalyPos;
 	RightEdge = nAnalyPos;
-	//ËãÁ¬ĞøÆå×Ó×ó±ß½ç
+	//ç®—è¿ç»­æ£‹å­å·¦è¾¹ç•Œ
 	while (LeftEdge>0)
 	{
 		if (AnalyLine[LeftEdge - 1] != StoneType)
@@ -464,7 +467,7 @@ int AnalysisLine(int* position, int GridNum, int StonePos)
 		LeftEdge--;
 	}
 
-	//ËãÁ¬ĞøÆå×ÓÓÒ±ß½ç
+	//ç®—è¿ç»­æ£‹å­å³è¾¹ç•Œ
 	while (RightEdge<GridNum)
 	{
 		if (AnalyLine[RightEdge + 1] != StoneType)
@@ -473,7 +476,7 @@ int AnalysisLine(int* position, int GridNum, int StonePos)
 	}
 	LeftRange = LeftEdge;
 	RightRange = RightEdge;
-	//ÏÂÃæÁ½¸öÑ­»·Ëã³öÆå×Ó¿ÉÏÂµÄ·¶Î§
+	//ä¸‹é¢ä¸¤ä¸ªå¾ªç¯ç®—å‡ºæ£‹å­å¯ä¸‹çš„èŒƒå›´
 	while (LeftRange>0)
 	{
 		if (AnalyLine[LeftRange - 1] == !StoneType)
@@ -486,59 +489,59 @@ int AnalysisLine(int* position, int GridNum, int StonePos)
 			break;
 		RightRange++;
 	}
-	//Èç¹û´Ë·¶Î§Ğ¡ÓÚ4Ôò·ÖÎöÃ»ÓĞÒâÒå
+	//å¦‚æœæ­¤èŒƒå›´å°äº4åˆ™åˆ†ææ²¡æœ‰æ„ä¹‰
 	if (RightRange - LeftRange<4)
 	{
 		for (int k = LeftRange; k <= RightRange; k++)
 			m_LineRecord[k] = ANALSISED;
 		return false;
 	}
-	//½«Á¬ĞøÇøÓòÉèÎª·ÖÎö¹ıµÄ,·ÀÖ¹ÖØ¸´·ÖÎö´ËÒ»ÇøÓò
+	//å°†è¿ç»­åŒºåŸŸè®¾ä¸ºåˆ†æè¿‡çš„,é˜²æ­¢é‡å¤åˆ†ææ­¤ä¸€åŒºåŸŸ
 	for (int k = LeftEdge; k <= RightEdge; k++)
 		m_LineRecord[k] = ANALSISED;
 	if (RightEdge - LeftEdge>3)
 	{
-		//Èç´ı·ÖÎöÆå×ÓÆåĞÍÎªÎåÁ¬
+		//å¦‚å¾…åˆ†ææ£‹å­æ£‹å‹ä¸ºäº”è¿
 		m_LineRecord[nAnalyPos] = FIVE;
 		return FIVE;
 	}
 	if (RightEdge - LeftEdge == 3)
 	{
-		//Èç´ı·ÖÎöÆå×ÓÆåĞÍÎªËÄÁ¬
+		//å¦‚å¾…åˆ†ææ£‹å­æ£‹å‹ä¸ºå››è¿
 		bool Leftfour = false;
 		if (LeftEdge>0)
 			if (AnalyLine[LeftEdge - 1] == NOSTONE)
-				Leftfour = true;//×ó±ßÓĞÆø
+				Leftfour = true;//å·¦è¾¹æœ‰æ°”
 
 		if (RightEdge<GridNum)
-			//ÓÒ±ßÎ´µ½±ß½ç
+			//å³è¾¹æœªåˆ°è¾¹ç•Œ
 			if (AnalyLine[RightEdge + 1] == NOSTONE)
-				//ÓÒ±ßÓĞÆø
-				if (Leftfour == true)//Èç×ó±ßÓĞÆø
-					m_LineRecord[nAnalyPos] = FOUR;//»îËÄ
+				//å³è¾¹æœ‰æ°”
+				if (Leftfour == true)//å¦‚å·¦è¾¹æœ‰æ°”
+					m_LineRecord[nAnalyPos] = FOUR;//æ´»å››
 				else
-					m_LineRecord[nAnalyPos] = SFOUR;//³åËÄ
+					m_LineRecord[nAnalyPos] = SFOUR;//å†²å››
 			else
-				if (Leftfour == true)//Èç×ó±ßÓĞÆø
-					m_LineRecord[nAnalyPos] = SFOUR;//³åËÄ
+				if (Leftfour == true)//å¦‚å·¦è¾¹æœ‰æ°”
+					m_LineRecord[nAnalyPos] = SFOUR;//å†²å››
 				else
-					if (Leftfour == true)//Èç×ó±ßÓĞÆø
-						m_LineRecord[nAnalyPos] = SFOUR;//³åËÄ
+					if (Leftfour == true)//å¦‚å·¦è¾¹æœ‰æ°”
+						m_LineRecord[nAnalyPos] = SFOUR;//å†²å››
 
 		return m_LineRecord[nAnalyPos];
 	}
 
 	if (RightEdge - LeftEdge == 2)
 	{
-		//Èç´ı·ÖÎöÆå×ÓÆåĞÍÎªÈıÁ¬
+		//å¦‚å¾…åˆ†ææ£‹å­æ£‹å‹ä¸ºä¸‰è¿
 		bool LeftThree = false;
 		if (LeftEdge>1)
 			if (AnalyLine[LeftEdge - 1] == NOSTONE)
-				//×ó±ßÓĞÆø
+				//å·¦è¾¹æœ‰æ°”
 				if (LeftEdge>1 && AnalyLine[LeftEdge - 2] == AnalyLine[LeftEdge])
 				{
-					//×ó±ß¸ôÒ»¿Õ°×ÓĞ¼º·½Æå×Ó
-					m_LineRecord[LeftEdge] = SFOUR;//³åËÄ
+					//å·¦è¾¹éš”ä¸€ç©ºç™½æœ‰å·±æ–¹æ£‹å­
+					m_LineRecord[LeftEdge] = SFOUR;//å†²å››
 					m_LineRecord[LeftEdge - 2] = ANALSISED;
 				}
 				else
@@ -546,32 +549,32 @@ int AnalysisLine(int* position, int GridNum, int StonePos)
 
 		if (RightEdge<GridNum)
 			if (AnalyLine[RightEdge + 1] == NOSTONE)
-				//ÓÒ±ßÓĞÆø
+				//å³è¾¹æœ‰æ°”
 				if (RightEdge<GridNum - 1 && AnalyLine[RightEdge + 2] == AnalyLine[RightEdge])
 				{
-					//ÓÒ±ß¸ô1¸ö¼º·½Æå×Ó
-					m_LineRecord[RightEdge] = SFOUR;//³åËÄ
+					//å³è¾¹éš”1ä¸ªå·±æ–¹æ£‹å­
+					m_LineRecord[RightEdge] = SFOUR;//å†²å››
 					m_LineRecord[RightEdge + 2] = ANALSISED;
 				}
 				else
-					if (LeftThree == true)//Èç×ó±ßÓĞÆø
-						m_LineRecord[RightEdge] = THREE;//»îÈı
+					if (LeftThree == true)//å¦‚å·¦è¾¹æœ‰æ°”
+						m_LineRecord[RightEdge] = THREE;//æ´»ä¸‰
 					else
-						m_LineRecord[RightEdge] = STHREE; //³åÈı
+						m_LineRecord[RightEdge] = STHREE; //å†²ä¸‰
 			else
 			{
-				if (m_LineRecord[LeftEdge] == SFOUR)//Èç×ó³åËÄ
-					return m_LineRecord[LeftEdge];//·µ»Ø
+				if (m_LineRecord[LeftEdge] == SFOUR)//å¦‚å·¦å†²å››
+					return m_LineRecord[LeftEdge];//è¿”å›
 
-				if (LeftThree == true)//Èç×ó±ßÓĞÆø
-					m_LineRecord[nAnalyPos] = STHREE;//ÃßÈı
+				if (LeftThree == true)//å¦‚å·¦è¾¹æœ‰æ°”
+					m_LineRecord[nAnalyPos] = STHREE;//çœ ä¸‰
 			}
 		else
 		{
-			if (m_LineRecord[LeftEdge] == SFOUR)//Èç×ó³åËÄ
-				return m_LineRecord[LeftEdge];//·µ»Ø
-			if (LeftThree == true)//Èç×ó±ßÓĞÆø
-				m_LineRecord[nAnalyPos] = STHREE;//ÃßÈı
+			if (m_LineRecord[LeftEdge] == SFOUR)//å¦‚å·¦å†²å››
+				return m_LineRecord[LeftEdge];//è¿”å›
+			if (LeftThree == true)//å¦‚å·¦è¾¹æœ‰æ°”
+				m_LineRecord[nAnalyPos] = STHREE;//çœ ä¸‰
 		}
 
 		return m_LineRecord[nAnalyPos];
@@ -579,68 +582,68 @@ int AnalysisLine(int* position, int GridNum, int StonePos)
 
 	if (RightEdge - LeftEdge == 1)
 	{
-		//Èç´ı·ÖÎöÆå×ÓÆåĞÍÎª¶şÁ¬
+		//å¦‚å¾…åˆ†ææ£‹å­æ£‹å‹ä¸ºäºŒè¿
 		bool Lefttwo = false;
 		bool Leftthree = false;
 
 		if (LeftEdge>2)
 			if (AnalyLine[LeftEdge - 1] == NOSTONE)
-				//×ó±ßÓĞÆø
+				//å·¦è¾¹æœ‰æ°”
 				if (LeftEdge - 1>1 && AnalyLine[LeftEdge - 2] == AnalyLine[LeftEdge])
 					if (AnalyLine[LeftEdge - 3] == AnalyLine[LeftEdge])
 					{
-						//×ó±ß¸ô2¸ö¼º·½Æå×Ó
+						//å·¦è¾¹éš”2ä¸ªå·±æ–¹æ£‹å­
 						m_LineRecord[LeftEdge - 3] = ANALSISED;
 						m_LineRecord[LeftEdge - 2] = ANALSISED;
-						m_LineRecord[LeftEdge] = SFOUR;//³åËÄ
+						m_LineRecord[LeftEdge] = SFOUR;//å†²å››
 					}
 					else
 						if (AnalyLine[LeftEdge - 3] == NOSTONE)
 						{
-							//×ó±ß¸ô1¸ö¼º·½Æå×Ó
+							//å·¦è¾¹éš”1ä¸ªå·±æ–¹æ£‹å­
 							m_LineRecord[LeftEdge - 2] = ANALSISED;
-							m_LineRecord[LeftEdge] = STHREE;//ÃßÈı
+							m_LineRecord[LeftEdge] = STHREE;//çœ ä¸‰
 						}
 						else
 							Lefttwo = true;
 
 		if (RightEdge<GridNum - 2)
 			if (AnalyLine[RightEdge + 1] == NOSTONE)
-				//ÓÒ±ßÓĞÆø
+				//å³è¾¹æœ‰æ°”
 				if (RightEdge + 1<GridNum - 1 && AnalyLine[RightEdge + 2] == AnalyLine[RightEdge])
 					if (AnalyLine[RightEdge + 3] == AnalyLine[RightEdge])
 					{
-						//ÓÒ±ß¸ôÁ½¸ö¼º·½Æå×Ó
+						//å³è¾¹éš”ä¸¤ä¸ªå·±æ–¹æ£‹å­
 						m_LineRecord[RightEdge + 3] = ANALSISED;
 						m_LineRecord[RightEdge + 2] = ANALSISED;
-						m_LineRecord[RightEdge] = SFOUR;//³åËÄ
+						m_LineRecord[RightEdge] = SFOUR;//å†²å››
 					}
 					else
 						if (AnalyLine[RightEdge + 3] == NOSTONE)
 						{
-							//ÓÒ±ß¸ô 1 ¸ö¼º·½Æå×Ó
+							//å³è¾¹éš” 1 ä¸ªå·±æ–¹æ£‹å­
 							m_LineRecord[RightEdge + 2] = ANALSISED;
-							m_LineRecord[RightEdge] = STHREE;//ÃßÈı
+							m_LineRecord[RightEdge] = STHREE;//çœ ä¸‰
 						}
 						else
 						{
-							if (m_LineRecord[LeftEdge] == SFOUR)//×ó±ß³åËÄ
-								return m_LineRecord[LeftEdge];//·µ»Ø
+							if (m_LineRecord[LeftEdge] == SFOUR)//å·¦è¾¹å†²å››
+								return m_LineRecord[LeftEdge];//è¿”å›
 
-							if (m_LineRecord[LeftEdge] == STHREE)//×ó±ßÃßÈı        
+							if (m_LineRecord[LeftEdge] == STHREE)//å·¦è¾¹çœ ä¸‰        
 								return m_LineRecord[LeftEdge];
 
 							if (Lefttwo == true)
-								m_LineRecord[nAnalyPos] = TWO;//·µ»Ø»î¶ş
+								m_LineRecord[nAnalyPos] = TWO;//è¿”å›æ´»äºŒ
 							else
-								m_LineRecord[nAnalyPos] = STWO;//Ãß¶ş
+								m_LineRecord[nAnalyPos] = STWO;//çœ äºŒ
 						}
 				else
 				{
-					if (m_LineRecord[LeftEdge] == SFOUR)//³åËÄ·µ»Ø
+					if (m_LineRecord[LeftEdge] == SFOUR)//å†²å››è¿”å›
 						return m_LineRecord[LeftEdge];
 
-					if (Lefttwo == true)//Ãß¶ş
+					if (Lefttwo == true)//çœ äºŒ
 						m_LineRecord[nAnalyPos] = STWO;
 				}
 
@@ -663,13 +666,13 @@ int CreatePossibleMove(int position[GRID_NUM][GRID_NUM],int color,movelists* mov
 			}
 		}
 	}
-	return count;//·µ»ØºÏ·¨×ß·¨¸öÊı
+	return count;//è¿”å›åˆæ³•èµ°æ³•ä¸ªæ•°
 }
 
-//ÔÚm_MoveListÖĞ²åÈëÒ»¸ö×ß·¨
-//nToXÊÇÄ¿±êÎ»ÖÃºá×ø±ê
-//nToYÊÇÄ¿±êÎ»ÖÃ×İ×ø±ê
-//nPlyÊÇ´Ë×ß·¨ËùÔÚµÄ²ã´Î
+//åœ¨m_MoveListä¸­æ’å…¥ä¸€ä¸ªèµ°æ³•
+//nToXæ˜¯ç›®æ ‡ä½ç½®æ¨ªåæ ‡
+//nToYæ˜¯ç›®æ ‡ä½ç½®çºµåæ ‡
+//nPlyæ˜¯æ­¤èµ°æ³•æ‰€åœ¨çš„å±‚æ¬¡
 AFTERMOVE alphabeta(int position[GRID_NUM][GRID_NUM],int depth, int a, int b,int color) {
 	int temp[GRID_NUM][GRID_NUM];
 	memcpy(temp, position, GRID_COUNT);
@@ -688,7 +691,7 @@ AFTERMOVE alphabeta(int position[GRID_NUM][GRID_NUM],int depth, int a, int b,int
 			temp[movl[i].ptMovePoint.x][movl[i].ptMovePoint.y] = MYWHITE;
 			AFTERMOVE s = alphabeta(temp, depth - 1, a, b, MYBLACK);
 			State state(temp);
-			AFTERMOVE ret(state , 0);//Òª·µ»ØµÄ×´Ì¬ ÓÉÓÚ·ÖÊı»¹²»ÖªµÀÔİÊ±ÎªÁã È»ºóÓÉÉÏÃæÄÇ¸öµÄ·ÖÊı¸øËü
+			AFTERMOVE ret(state , 0);//è¦è¿”å›çš„çŠ¶æ€ ç”±äºåˆ†æ•°è¿˜ä¸çŸ¥é“æš‚æ—¶ä¸ºé›¶ ç„¶åç”±ä¸Šé¢é‚£ä¸ªçš„åˆ†æ•°ç»™å®ƒ
 			if (a < s.score) {
 				a = s.score;
 				ret.score = s.score;
@@ -709,7 +712,7 @@ AFTERMOVE alphabeta(int position[GRID_NUM][GRID_NUM],int depth, int a, int b,int
 			temp[movl[i].ptMovePoint.x][movl[i].ptMovePoint.y] = MYBLACK;
 			AFTERMOVE s = alphabeta(temp, depth - 1, a, b, MYWHITE);
 			State state(temp);
-			AFTERMOVE ret(state, 0);//Òª·µ»ØµÄ×´Ì¬ ÓÉÓÚ·ÖÊı»¹²»ÖªµÀÔİÊ±ÎªÁã È»ºóÓÉÉÏÃæÄÇ¸öµÄ·ÖÊı¸øËü
+			AFTERMOVE ret(state, 0);//è¦è¿”å›çš„çŠ¶æ€ ç”±äºåˆ†æ•°è¿˜ä¸çŸ¥é“æš‚æ—¶ä¸ºé›¶ ç„¶åç”±ä¸Šé¢é‚£ä¸ªçš„åˆ†æ•°ç»™å®ƒ
 			if (b > s.score) {
 				b = s.score;
 				ret.score = s.score;
@@ -831,7 +834,7 @@ int main() {
 	int nowcolor = MYBLACK;
 	int x;
 	int y;
-	int step = 0;//²½Êı
+	int step = 0;//æ­¥æ•°
 	int depth = 2;
 	cout << "enter your color:black 0,white 1" << endl;
 	cin >> playercolor;
@@ -860,7 +863,7 @@ int main() {
 			}
 			//cout << "enter your position" << endl;
 			//cin >> x >> y;
-			board[x][y] = playercolor;//×¢ÒâÕâÀïÊó±ê·µ»ØµÄ¾ÍÊÇ´ÓÁã¿ªÊ¼µÄ
+			board[x][y] = playercolor;//æ³¨æ„è¿™é‡Œé¼ æ ‡è¿”å›çš„å°±æ˜¯ä»é›¶å¼€å§‹çš„
 			//display(board);
 			draw(board);
 			nowcolor = aicolor;
@@ -890,3 +893,5 @@ int main() {
 
 	return 0;
 }
+
+
