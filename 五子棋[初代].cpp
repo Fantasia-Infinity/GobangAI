@@ -5,7 +5,7 @@
 #include<time.h>
 #include<vector>
 #include<algorithm>
-#include <graphics.h>      // 引用图形库头文件
+#include <graphics.h>      
 #include <conio.h>
 #define GRID_NUM    15 //每一行(列)的棋盘交点数
 #define GRID_COUNT  225*4//棋盘内存大小
@@ -106,7 +106,7 @@ int TypeCount[2][20];          //存放统记过的分析结果的数组
 int m_nMoveCount;//此变量用以记录走法的总数  
 int m_nSearchDepth;        //最大搜索深度
 int MaxDepth=2;        //当前搜索的最大搜索深度
-							   //CSearchEngine* m_pSE;         //搜索引擎指针 
+							 
 										 //位置重要性价值表,此表从中间向外,越往外价值越低
 int PosValue[GRID_NUM][GRID_NUM] =
 {
