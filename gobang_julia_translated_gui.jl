@@ -2,6 +2,8 @@
 # Translated from C++ Gobang AI
 # Note: Graphics and console input (conio.h) specific parts are adapted for Julia console.
 
+using Gtk # Added for GUI
+
 # Constants
 const GRID_NUM = 15 # Board size (15x15)
 const MYBLACK = 0    # Black stone
@@ -640,84 +642,84 @@ function init_board()::Matrix{Int}
 end
 
 # --- Main Game Loop ---
-function main_game()
-    board = init_board()
-    
-    println("Enter your color: (0 for Black, 1 for White)")
-    player_color = -1 # Initialize with an invalid value
-    while true
-        print("> ") # Add a small prompt for clarity
-        player_color_str = strip(readline())
-        if player_color_str == "0"
-            player_color = MYBLACK
-            break
-        elseif player_color_str == "1"
-            player_color = MYWHITE
-            break
-        else
-            println("Invalid input. Please enter 0 for Black or 1 for White.")
-        end
-    end
-    
-    ai_color = 1 - player_color
-    current_color = MYBLACK # Black always starts
-    
-    search_depth = 5 # AI search depth
-    # if GRID_NUM > 10; search_depth = 2; end # Adjust depth for larger boards if needed
-    # if GRID_NUM > 15; search_depth = 1; end # Deeper search is slow
-
-    println("You are: $(player_color == MYBLACK ? "Black" : "White")")
-    println("AI is: $(ai_color == MYBLACK ? "Black" : "White")")
-    println("Search depth: $search_depth")
-
-    display_board(board)
-    step = 0
-
-    while true
-        if is_game_over(board, current_color) # Check before player/AI move
-            # is_game_over prints the result
-            break
-        end
-
-        if current_color == player_color
-            println("Your turn ($(player_color == MYBLACK ? "Black" : "White")). Enter row and col (e.g., 7 7):")
-            while true
-                try
-                    input = readline()
-                    parts = split(input)
-                    r = parse(Int, parts[1])
-                    c = parse(Int, parts[2])
-                    if 1 <= r <= GRID_NUM && 1 <= c <= GRID_NUM && board[r, c] == NOSTONE
-                        board[r, c] = player_color
-                        break
-                    else
-                        println("Invalid move. Try again.")
-                    end
-                catch e
-                    println("Invalid input. Format: row col (e.g., 7 7). Try again.")
-                end
-            end
-        else # AI's turn
-            println("AI's turn ($(ai_color == MYBLACK ? "Black" : "White"))...")
-            if step == 0 && ai_color == MYBLACK # AI is black and first move
-                 # Center move for AI if it's black and starts
-                center = ceil(Int, GRID_NUM / 2)
-                board[center, center] = ai_color
-                println("AI places at $center, $center")
-            else
-                board = make_ai_move(board, ai_color, search_depth)
-            end
-        end
-        
-        display_board(board)
-        current_color = 1 - current_color # Switch player
-        step += 1
-    end
-    println("Thank you for playing!")
-end
+# function main_game() # Commented out to replace with GUI version
+#     board = init_board()
+#     
+#     println("Enter your color: (0 for Black, 1 for White)")
+#     player_color = -1 # Initialize with an invalid value
+#     while true
+#         print("> ") # Add a small prompt for clarity
+#         player_color_str = strip(readline())
+#         if player_color_str == "0"
+#             player_color = MYBLACK
+#             break
+#         elseif player_color_str == "1"
+#             player_color = MYWHITE
+#             break
+#         else
+#             println("Invalid input. Please enter 0 for Black or 1 for White.")
+#         end
+#     end
+#     
+#     ai_color = 1 - player_color
+#     current_color = MYBLACK # Black always starts
+#     
+#     search_depth = 5 # AI search depth
+#     # if GRID_NUM > 10; search_depth = 2; end # Adjust depth for larger boards if needed
+#     # if GRID_NUM > 15; search_depth = 1; end # Deeper search is slow
+# 
+#     println("You are: $(player_color == MYBLACK ? "Black" : "White")")
+#     println("AI is: $(ai_color == MYBLACK ? "Black" : "White")")
+#     println("Search depth: $search_depth")
+# 
+#     display_board(board)
+#     step = 0
+# 
+#     while true
+#         if is_game_over(board, current_color) # Check before player/AI move
+#             # is_game_over prints the result
+#             break
+#         end
+# 
+#         if current_color == player_color
+#             println("Your turn ($(player_color == MYBLACK ? "Black" : "White")). Enter row and col (e.g., 7 7):")
+#             while true
+#                 try
+#                     input = readline()
+#                     parts = split(input)
+#                     r = parse(Int, parts[1])
+#                     c = parse(Int, parts[2])
+#                     if 1 <= r <= GRID_NUM && 1 <= c <= GRID_NUM && board[r, c] == NOSTONE
+#                         board[r, c] = player_color
+#                         break
+#                     else
+#                         println("Invalid move. Try again.")
+#                     end
+#                 catch e
+#                     println("Invalid input. Format: row col (e.g., 7 7). Try again.")
+#                 end
+#             end
+#         else # AI's turn
+#             println("AI's turn ($(ai_color == MYBLACK ? "Black" : "White"))...")
+#             if step == 0 && ai_color == MYBLACK # AI is black and first move
+#                  # Center move for AI if it's black and starts
+#                 center = ceil(Int, GRID_NUM / 2)
+#                 board[center, center] = ai_color
+#                 println("AI places at $center, $center")
+#             else
+#                 board = make_ai_move(board, ai_color, search_depth)
+#             end
+#         end
+#         
+#         display_board(board)
+#         current_color = 1 - current_color # Switch player
+#         step += 1
+#     end
+#     println("Thank you for playing!")
+# end
 
 #Run the game
-main_game() # Uncomment to run when executing the file
+# main_game() # Commented out to replace with GUI version
 
 #Example of how to call evaluate if needed for testing:
 # test_board = init_board()
@@ -732,7 +734,177 @@ main_game() # Uncomment to run when executing the file
 # if is_game_over(test_board, MYWHITE); println("Game is over."); else println("Game not over."); end
 
 
-println("Gobang AI (Julia Version) loaded.")
-println("To play, uncomment 'main_game()' at the end of the file and run.")
+# --- GUI Implementation ---
+const CELL_SIZE = 40
+const BOARD_SIZE = GRID_NUM * CELL_SIZE
+const PLAYER_COLOR = MYBLACK # Player is Black by default
+const AI_COLOR = MYWHITE     # AI is White by default
+
+current_board_gui = init_board()
+current_player_gui = MYBLACK # Black starts
+game_over_gui = false
+status_label_gui = Gtk.GtkLabel("Black's turn")
+
+function draw_board(canvas, board)
+    ctx = Gtk.getgc(canvas)
+    # Clear canvas
+    Gtk.rectangle(ctx, 0, 0, BOARD_SIZE, BOARD_SIZE)
+    Gtk.set_source_rgb(ctx, 0.9, 0.8, 0.7) # Light wood color
+    Gtk.fill(ctx)
+
+    # Draw grid lines
+    Gtk.set_source_rgb(ctx, 0, 0, 0) # Black lines
+    Gtk.set_line_width(ctx, 1)
+    for i = 0:GRID_NUM
+        Gtk.move_to(ctx, i * CELL_SIZE, 0)
+        Gtk.line_to(ctx, i * CELL_SIZE, BOARD_SIZE)
+        Gtk.stroke(ctx)
+        Gtk.move_to(ctx, 0, i * CELL_SIZE)
+        Gtk.line_to(ctx, BOARD_SIZE, i * CELL_SIZE)
+        Gtk.stroke(ctx)
+    end
+
+    # Draw stones
+    for r = 1:GRID_NUM
+        for c = 1:GRID_NUM
+            if board[r, c] == MYBLACK
+                Gtk.arc(ctx, (c-0.5) * CELL_SIZE, (r-0.5) * CELL_SIZE, CELL_SIZE/2 - 2, 0, 2*pi)
+                Gtk.set_source_rgb(ctx, 0, 0, 0) # Black stone
+                Gtk.fill(ctx)
+            elseif board[r, c] == MYWHITE
+                Gtk.arc(ctx, (c-0.5) * CELL_SIZE, (r-0.5) * CELL_SIZE, CELL_SIZE/2 - 2, 0, 2*pi)
+                Gtk.set_source_rgb(ctx, 1, 1, 1) # White stone
+                Gtk.fill(ctx)
+                Gtk.set_source_rgb(ctx, 0, 0, 0) # Black border for white stone
+                Gtk.arc(ctx, (c-0.5) * CELL_SIZE, (r-0.5) * CELL_SIZE, CELL_SIZE/2 - 2, 0, 2*pi)
+                Gtk.stroke(ctx)
+            end
+        end
+    end
+end
+
+function reset_game_gui(canvas)
+    global current_board_gui = init_board()
+    global current_player_gui = MYBLACK
+    global game_over_gui = false
+    Gtk.GAccessor.text(status_label_gui, "Black's turn")
+    Gtk.queue_draw(canvas) # Request a redraw instead of drawing directly
+end
+
+function handle_click(widget, event, canvas)
+    global current_board_gui, current_player_gui, game_over_gui
+    if game_over_gui
+        return
+    end
+
+    x, y = event.x, event.y
+    r = floor(Int, y / CELL_SIZE) + 1
+    c = floor(Int, x / CELL_SIZE) + 1
+
+    if 1 <= r <= GRID_NUM && 1 <= c <= GRID_NUM && current_board_gui[r, c] == NOSTONE && current_player_gui == PLAYER_COLOR
+        current_board_gui[r, c] = PLAYER_COLOR
+        draw_board(canvas, current_board_gui)
+        
+        if is_game_over(current_board_gui, PLAYER_COLOR)
+            game_over_gui = true
+            score = evaluate_board(current_board_gui, PLAYER_COLOR)
+            if score <= -9999
+                Gtk.GAccessor.text(status_label_gui, "Game Over! Black wins.")
+            elseif score >= 9999
+                 Gtk.GAccessor.text(status_label_gui, "Game Over! White wins.") # Should not happen if player is black
+            elseif !any(x -> x == NOSTONE, current_board_gui)
+                 Gtk.GAccessor.text(status_label_gui, "Game Over! It's a draw.")
+            end
+            return
+        end
+        
+        current_player_gui = AI_COLOR
+        Gtk.GAccessor.text(status_label_gui, "AI (White)'s turn...")
+        
+        # AI Move (with a slight delay for UX, Gtk might need async handling for this)
+        # For simplicity, direct call here. In a real app, use Gtk.GLib.idle_add for responsiveness
+        yield() # Allow UI to update
+
+        if !game_over_gui && current_player_gui == AI_COLOR
+            search_depth_gui = 3 # Can be adjusted
+            if sum(current_board_gui .== NOSTONE) == GRID_NUM * GRID_NUM && AI_COLOR == MYBLACK # AI is black and first move
+                center = ceil(Int, GRID_NUM / 2)
+                current_board_gui[center, center] = AI_COLOR
+            else
+                current_board_gui = make_ai_move(current_board_gui, AI_COLOR, search_depth_gui)
+            end
+            draw_board(canvas, current_board_gui)
+
+            if is_game_over(current_board_gui, AI_COLOR)
+                game_over_gui = true
+                score = evaluate_board(current_board_gui, AI_COLOR)
+                if score <= -9999 
+                    Gtk.GAccessor.text(status_label_gui, "Game Over! Black wins.") # Should not happen if AI is white
+                elseif score >= 9999
+                    Gtk.GAccessor.text(status_label_gui, "Game Over! White wins.")
+                elseif !any(x -> x == NOSTONE, current_board_gui)
+                    Gtk.GAccessor.text(status_label_gui, "Game Over! It's a draw.")
+                end
+                return
+            end
+            current_player_gui = PLAYER_COLOR
+            Gtk.GAccessor.text(status_label_gui, "Black's turn")
+        end
+    end
+end
+
+function main_gui()
+    win = Gtk.GtkWindow("Gobang AI", BOARD_SIZE, BOARD_SIZE + 50)
+    Gtk.set_gtk_property!(win, :resizable, false)
+
+    global current_board_gui = init_board() # Ensure board is initialized
+
+    vbox = Gtk.GtkBox(:v) # Vertical box
+    push!(win, vbox)
+
+    canvas = Gtk.GtkCanvas(BOARD_SIZE, BOARD_SIZE)
+    Gtk.push!(vbox, canvas)
+
+    Gtk.GAccessor.text(status_label_gui, "Black's turn (Player)")
+    Gtk.push!(vbox, status_label_gui)
+    
+    reset_button = Gtk.GtkButton("Reset Game")
+    Gtk.push!(vbox, reset_button)
+
+    Gtk.signal_connect(reset_button, "clicked") do widget
+        reset_game_gui(canvas)
+    end
+    
+    Gtk.signal_connect(canvas, "button-press-event") do widget, event
+        handle_click(widget, event, canvas)
+    end
+
+    # Corrected draw signal connection
+    Gtk.signal_connect(canvas, "draw") do widget, cr # Add cr to accept the Cairo context
+        # It's good practice to use the passed Cairo context 'cr' if available,
+        # but Gtk.getgc(widget) should also work once the canvas is realized.
+        # For consistency with your existing draw_board, we can keep it,
+        # or you could refactor draw_board to accept 'cr'.
+        draw_board(widget, current_board_gui)
+    end
+    
+    Gtk.showall(win)
+    
+    # Initial draw will be handled by the "draw" signal after showall()
+    # reset_game_gui(canvas) # Remove this direct call
+
+    if !isinteractive()
+        cond = Condition()
+        Gtk.signal_connect(win, :destroy) do widget
+            notify(cond)
+        end
+        wait(cond)
+    end
+end
+
+# Start the GUI
+main_gui()
+
+println("Gobang AI (Julia Version) with GUI loaded.")
 println("The analysis_line! function's pattern matching is a simplified version of the C++ original and may need further refinement for full accuracy.")
 
