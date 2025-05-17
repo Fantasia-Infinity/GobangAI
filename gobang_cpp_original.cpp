@@ -1,10 +1,10 @@
 #include <cstdlib>
 #include <iostream>
-#include<stdlib.h>
-#include<string.h>
-#include<time.h>
-#include<vector>
-#include<algorithm>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <vector>
+#include <algorithm>
 #include <graphics.h>      
 #include <conio.h>
 #define GRID_NUM    15 //每一行(列)的棋盘交点数
